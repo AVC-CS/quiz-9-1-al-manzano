@@ -85,18 +85,34 @@ Student *sortStudent(Student *head, int asc)
         prev = NULL;
 
         while (ptr != NULL && ptr->next != NULL) {
-            if (ptr->sum > ptr->next->sum) {
-                after = ptr->next;
-                ptr->next = after->next;
-                after->next = ptr;
-
-                if (prev != NULL) {
-                    prev->next = after;
+            if (asc == 1) {
+                if (ptr->sum > ptr->next->sum) {
+                    after = ptr->next;
+                    ptr->next = after->next;
+                    after->next = ptr;
+                    if (prev != NULL) {
+                        prev->next = after;
+                    }
+                    tmp = after;
+                    if (prev == NULL) {
+                        head = tmp;
+                    }
+                    swap = true;
                 }
-                tmp = after;
-                if (prev == NULL)
-                    head = tmp;
-                swap = true;
+            } else {
+                if (ptr->sum < ptr->next->sum) {
+                    after = ptr->next;
+                    ptr->next = after->next;
+                    after->next = ptr;
+                    if (prev != NULL) {
+                        prev->next = after;
+                    }
+                    tmp = after;
+                    if (prev == NULL) {
+                        head = tmp;
+                    }
+                    swap = true;
+                }
             }
             prev = ptr;
             ptr = ptr->next;
