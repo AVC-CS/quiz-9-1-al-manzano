@@ -121,3 +121,7 @@ Student *sortStudent(Student *head, int asc)
 
     return head;
 }
+
+Student *swapNodes(Student *prev, Student *ptr) {
+
+}   
