@@ -23,9 +23,29 @@ Student *sortStudent(Student *head, int asc);
 
 Student *makeStudent(int N)
 {
-    /*******************************
-     * Code your program here
-     *******************************/
+    ifstream ifs;
+    ifs.open("students.txt");
+    if (!ifs) {
+        cerr << "File Error\n";
+        exit(0);
+    }
+
+    Student *tmp, *prev, *head;
+    for (int i = 0; i < N; i++) {
+        tmp = new Student;
+        ifs >> tmp->id >> tmp->name >> tmp->score[0] >> tmp->score[1];
+        tmp->sum = tmp->score[0] + tmp->score[1];
+        tmp->avg = tmp->sum / (double)NUMCOURSE;
+        tmp->next = NULL;
+        if (i == 0) {
+            head = tmp;
+        } else {
+            prev->next = tmp;
+        }
+        prev = tmp;
+    }
+
+    return head;
 }
 void printStudent(Student *head)
 {
@@ -41,20 +61,47 @@ void printStudent(Student *head)
         ptr = ptr->next;
     }
     cout << endl;
-    /*******************************
-     * Code your program here
-     *******************************/
 }
 int getLength(Student *head)
 {
-    /*******************************
-     * Code your program here
-     *******************************/
+    Student *tmp = head;
+    int cnt = 0;
+
+    while(tmp != NULL) {
+        cnt++;
+        tmp = tmp->next;
+    }
+
+    return cnt;
 }
 Student *sortStudent(Student *head, int asc)
 {
-    /*******************************
-     * Code your program here
-     *******************************/
+    Student *ptr, *prev, *tmp, *after;
+    bool swap;
+
+    do {
+        swap = false;
+        ptr = head;
+        prev = NULL;
+
+        while (ptr != NULL && ptr->next != NULL) {
+            if (ptr->sum > ptr->next->sum) {
+                after = ptr->next;
+                ptr->next = after->next;
+                after->next = ptr;
+
+                if (prev != NULL) {
+                    prev->next = after;
+                }
+                tmp = after;
+                if (prev == NULL)
+                    head = tmp;
+                swap = true;
+            }
+            prev = ptr;
+            ptr = ptr->next;
+        }
+    } while (swap);
+
     return head;
 }
