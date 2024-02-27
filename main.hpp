@@ -20,6 +20,7 @@ Student *makeStudent(int N);
 void printStudent(Student *head);
 int getLength(Student *head);
 Student *sortStudent(Student *head, int asc);
+Student *swapNodes(Student *, Student *);
 
 Student *makeStudent(int N)
 {
@@ -76,8 +77,8 @@ int getLength(Student *head)
 }
 Student *sortStudent(Student *head, int asc)
 {
-    Student *ptr, *prev, *tmp, *after;
-    bool swap;
+    Student *ptr, *prev, *tmp;
+    bool swap, scheck;
 
     do {
         swap = false;
@@ -85,34 +86,23 @@ Student *sortStudent(Student *head, int asc)
         prev = NULL;
 
         while (ptr != NULL && ptr->next != NULL) {
+            scheck = false;
             if (asc == 1) {
                 if (ptr->sum > ptr->next->sum) {
-                    after = ptr->next;
-                    ptr->next = after->next;
-                    after->next = ptr;
-                    if (prev != NULL) {
-                        prev->next = after;
-                    }
-                    tmp = after;
-                    if (prev == NULL) {
-                        head = tmp;
-                    }
-                    swap = true;
+                    tmp = swapNodes(prev, ptr);
+                    scheck = true;
                 }
             } else {
                 if (ptr->sum < ptr->next->sum) {
-                    after = ptr->next;
-                    ptr->next = after->next;
-                    after->next = ptr;
-                    if (prev != NULL) {
-                        prev->next = after;
-                    }
-                    tmp = after;
-                    if (prev == NULL) {
-                        head = tmp;
-                    }
-                    swap = true;
+                    tmp = swapNodes(prev, ptr);
+                    scheck = true;
                 }
+            }
+            if (scheck) {
+                if (prev == NULL) {
+                    head = tmp;
+                }
+                swap = true;
             }
             prev = ptr;
             ptr = ptr->next;
@@ -123,5 +113,13 @@ Student *sortStudent(Student *head, int asc)
 }
 
 Student *swapNodes(Student *prev, Student *ptr) {
+    Student *after = ptr->next;
 
+    ptr->next = after->next;
+    after->next = ptr;
+    if (prev != NULL) {
+        prev->next = after;
+    }
+
+    return after;
 }   
